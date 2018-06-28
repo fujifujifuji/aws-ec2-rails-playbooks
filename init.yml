@@ -1,14 +1,14 @@
 ---
 - hosts: ec2
-  sudo: true
   vars:
     environtment: production
+    sudo: yes
     ruby_version: 2.4.0
-    rbenv_root: /home/vagrant/.rbenv
-    rbenv_bin: /home/vagrant/.rbenv/libexec/rbenv
+    rbenv_root: /home/ec2-user/.rbenv
+    bash_profile_path: /home/ec2-user/.bash_profile
   roles:
     - common
-    # - rbenv
+    - rbenv
     # - rails
     # - nginx
     # - mysql

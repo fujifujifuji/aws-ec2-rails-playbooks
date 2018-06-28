@@ -46,3 +46,6 @@ $ ansible-playbook init.yml -i hosts --check
 
 ### playbook実行
 
+```
+$ ansible-playbook init.yml -i hosts -s
+```

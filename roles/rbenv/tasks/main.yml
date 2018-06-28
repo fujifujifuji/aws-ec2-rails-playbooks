@@ -1,0 +1,44 @@
+---
+- name: install dependencies
+  yum: pkg={{item}} state=latest
+  with_items:
+    - openssl-devel
+    - gcc-c++
+    - openssl-devel
+    - ImageMagick
+    - ImageMagick-devel
+
+- name: clone rbenv
+  git: repo=https://github.com/sstephenson/rbenv.git dest='{{ rbenv_root }}'
+
+# - name: mkdir rbenv # Permission deniedでmkdirされないため
+#   file: path={{ rbenv_root }}{{ item }} state=directory
+#   become: yes
+#   with_items:
+#     - /shims
+#     - /versions
+#     - /plugins
+
+- name: clone ruby-build
+  git: repo=https://github.com/sstephenson/ruby-build.git dest='{{ rbenv_root }}'/plugins/ruby-build
+
+- name: set rbenv path
+  lineinfile:
+    dest='{{ bash_profile_path }}'
+    create=yes
+    line={{ item }}
+  with_items:
+    - 'eval "$(rbenv init -)"'
+    - 'export PATH="$HOME/.rbenv/bin:$PATH"'
+
+- name: source bash_profile
+  command: source '{{ bash_profile_path }}'
+
+- name: install ruby
+  command: rbenv install '{{ ruby_version }}'
+
+- name: rbenv rehash
+  command: rbenv rehash
+
+- name: set ruby versions
+  command: rbenv global '{{ ruby_version }}'
