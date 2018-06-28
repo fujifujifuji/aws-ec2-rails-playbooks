@@ -1,0 +1,7 @@
+---
+- name: update yum
+  yum: name=* state=latest
+
+- name: install git
+  yum: name=git state=installed
+
